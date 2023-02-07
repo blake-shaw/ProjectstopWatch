@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Stop Watch</title>
+    <link rel="stylesheet" href="cssStopwatch.css" />
+</head>
+<body>
+    <div class= "watch">
+        <div class="time">
+            00:00:00
+        </div> 
+        <div class="controls">
+            <button id="start">Start</button>           
+             <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+
+        </div>
+    </div>
+    <script src="StopwatchJS.js"></script>
+</body>
+
+</html>
+--------------------------------------------------------------------------CSS-----------------------------------------------------------------------------------------
+:root {
+  --primary: crimson;
+  --dark: gray;
+  --darkdark: black;
+--light:white;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Fire sans', sans-serif;
+}
+
+body{
+    background: var(--dark);
+    color: var(--light);
+}
+
+.watch {
+    text-align: center;
+    background-color: var(--darkdark);
+    width: 100px;
+    max-width: 360px;
+    margin: 4rem auto;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
+.time {
+    font-size: 5rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.controls button {
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    user-select: none;
+    cursor: pointer;
+
+    color: lightblue;
+    font-size: 1.125;
+    background-color: var(--primary);
+    margin: 0 0.05rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem ;
+    transition: 0.4s;
+
+}
+
+button:hover {
+    opacity: 0.7;
+}
+
+button:active {
+    background-color: brown;
+}
+---------------------------------------------------------------JS--------------------------------------------------------------------------------------------------------
+//Global Variables
+
+const time_el = document.querySelector(".watch .time");
+const start_btn = document.getElementById("start");
+const stop_btn = document.getElementById("stop");
+const reset_btn = document.getElementById("reset");
+
+let seconds = 0;
+let interval = null;
+
+//Event Listeners
+start_btn.addEventListerner('click, start');
+stop_btn.addEventListerner('click, stop');
+reset_btn.addEventListerner('click, reset');
+
+// Update the timer
+
+function timer () {
+    seconds++;
+
+    //Format our time
+    let hrs = Math.floor(seconds / 3600);
+    let mins = Math.floor((seconds - (hrs * 3600)) / 60);
+    let secs = seconds % 60;
+
+    if (secs < 10) secs ='0' + secs;
+    if (mins < 10) secs ='0' + mins;
+    if (hrs< 10) secs ='0' + hrs;
+
+    time_el.innerText = `$(hrs):$(mins):$(secs)`;
+}
+
+function start() {
+    if (interval) {
+        return
+
+}
+interval = setInterval(timer, 1000);
+
+}
+
+function stop() {
+    clearInterval(interval);
+    interval = null;
+}
+
+function reset () {
+    stop();
+    seconds = 0;
+    time_el.innerText= '00:00:00';
+
+}
